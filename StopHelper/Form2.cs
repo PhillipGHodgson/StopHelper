@@ -39,5 +39,11 @@ namespace StopHelper
             sucessful = true;
             this.Close();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            sucessful = false;
+            this.Close();
+        }
     }
 }
