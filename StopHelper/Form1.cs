@@ -19,15 +19,19 @@ namespace StopHelper
         int x2, y2;
         bool dragging = false;
         bool waiting = true;
-        Graphics g;
-        Image image;
+        Graphics g, g1;
+        Image image, buffer;
+        SceneData data = new SceneData();
 
-        List<RegionData> dataPoints = new List<RegionData>();
+        BindingList<RegionData> dataPoints = new BindingList<RegionData>();
 
         public Form1()
         {
             InitializeComponent();
             g = pictureBox1.CreateGraphics();
+            buffer = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            g1 = Graphics.FromImage(buffer);
+            listBox1.DataSource = dataPoints;
         }
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
@@ -67,7 +71,8 @@ namespace StopHelper
             if (Form2.sucessful)
             {
                 dataPoints.Add(regionData);
-                listBox1.Items.Add(regionData);
+             //   listBox1.Items.Add(regionData);
+                data.regions = dataPoints.ToArray();
             }
 
         }
@@ -81,15 +86,15 @@ namespace StopHelper
                 x2 = e.X;
                 y2 = e.Y;
             }
-            pictureBox1.Refresh();
+           // pictureBox1.Refresh();
         }
 
 
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            Image buffer = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-            Graphics g1 = Graphics.FromImage(buffer);
+            if (!checkBox1.Checked)
+                return;
             if (image != null)
                 g1.DrawImage(image, 0, 0);
             if (dragging || waiting)
@@ -109,17 +114,20 @@ namespace StopHelper
                                                        (int)(r.heightPercent * pictureBox1.Height));
             }
             pictureBox1.Image = buffer;
+
         }
 
         void save()
         {
-            SceneData data = new SceneData();
-            data.regions = dataPoints.ToArray();
-            data.clips = new string[] { "Movie_0010", "Movie_0006", "Movie_0009", "Movie_0008" };
+            
+            //data.regions = dataPoints.ToArray();
+            //data.clips = new string[] { "Movie_0010", "Movie_0006", "Movie_0009", "Movie_0008" };
+
 
             XmlSerializer serializer =
      new XmlSerializer(typeof(SceneData));
             SaveFileDialog d = new SaveFileDialog();
+          //  d.CheckFileExists = true;
             if (d.ShowDialog() == DialogResult.OK)
             {
                 TextWriter writer = new StreamWriter(d.FileName);
@@ -129,7 +137,33 @@ namespace StopHelper
         }
         void open()
         {
+            OpenFileDialog openFile = new OpenFileDialog();
+            if (openFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                 try
+                {
 
+                    System.IO.StreamReader sreader = new System.IO.StreamReader(openFile.FileName);
+                    // use StreamReader.ReadLine or other methods to read the file data
+
+                    XmlSerializer s = new XmlSerializer(typeof(SceneData));
+                    SceneData data = (SceneData)s.Deserialize(sreader);
+
+                    sreader.Close();
+
+                    this.data = data;
+                    dataPoints = new BindingList<RegionData>();
+                    if (data.regions != null)
+                    {
+                        foreach (RegionData d in data.regions)
+                            dataPoints.Add(d);
+                    }
+                 }
+                 catch (System.IO.FileNotFoundException)
+                 {
+                     //return null;
+                 }
+            }
         }
         void paste()
         {
@@ -165,23 +199,48 @@ namespace StopHelper
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
-            if (listBox1.SelectedItem == null)
-            {
-                editToolStripMenuItem.Enabled = false;
-                deleteToolStripMenuItem.Enabled = false;
-            }
+             editToolStripMenuItem.Enabled = (listBox1.SelectedItem != null);
+             deleteToolStripMenuItem.Enabled = (listBox1.SelectedItem != null);
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            RegionData data = (RegionData)listBox1.SelectedItem;
+            Form2 editForm = new Form2(data);
+            editForm.ShowDialog();
+            if (Form2.sucessful)
+            {
+               // data.look = Form2.data.look;
+               // data.regionName = Form2.data.regionName;
+             //   ((RegionData)listBox1.SelectedItem).look = Form2.data.look;
+                //listBox1.Refresh();
+            }
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             dataPoints.Remove((RegionData)listBox1.SelectedItem);
             listBox1.Items.RemoveAt(listBox1.SelectedIndex);
+            data.regions = dataPoints.ToArray();
 
         }
+
+        private void clipNamesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ClipNamesForm clipForm = new ClipNamesForm(data);
+            clipForm.ShowDialog();
+        }
+
+        private void triggersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TriggerForm triggerForm = new TriggerForm(data);
+            triggerForm.ShowDialog();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Refresh();
+        }
+
     }
 }

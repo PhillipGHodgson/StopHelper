@@ -29,7 +29,20 @@ namespace StopHelper
             comboBox1.Items.Add(MouseLook.UPLEFT_ARROW);
             comboBox1.Items.Add(MouseLook.UPRIGHT_ARROW);
 
-            comboBox1.SelectedIndex = 0;
+            if (data.regionName != null)
+            {
+                textBox1.Text = data.regionName;
+                for (int i = 0; i < comboBox1.Items.Count; i++)
+                {
+                    if (comboBox1.Items[i].Equals(data.look))
+                    {
+                        comboBox1.SelectedIndex = i;
+                        return;
+                    }
+                }
+            }
+            else
+                comboBox1.SelectedIndex = 0;
         }
 
         private void button1_Click(object sender, EventArgs e)

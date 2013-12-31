@@ -40,8 +40,10 @@
             this.triggersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.regionsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.regionsMenu.SuspendLayout();
@@ -49,7 +51,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 49);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 53);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(640, 480);
             this.pictureBox1.TabIndex = 0;
@@ -83,14 +85,14 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -113,22 +115,25 @@
             // clipNamesToolStripMenuItem
             // 
             this.clipNamesToolStripMenuItem.Name = "clipNamesToolStripMenuItem";
-            this.clipNamesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clipNamesToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.clipNamesToolStripMenuItem.Text = "Clip Names";
+            this.clipNamesToolStripMenuItem.Click += new System.EventHandler(this.clipNamesToolStripMenuItem_Click);
             // 
             // triggersToolStripMenuItem
             // 
             this.triggersToolStripMenuItem.Name = "triggersToolStripMenuItem";
-            this.triggersToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.triggersToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.triggersToolStripMenuItem.Text = "Triggers";
+            this.triggersToolStripMenuItem.Click += new System.EventHandler(this.triggersToolStripMenuItem_Click);
             // 
             // listBox1
             // 
             this.listBox1.ContextMenuStrip = this.regionsMenu;
+            this.listBox1.DisplayMember = "DisplayTitle";
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(658, 49);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(120, 173);
+            this.listBox1.Size = new System.Drawing.Size(148, 173);
             this.listBox1.TabIndex = 2;
             // 
             // regionsMenu
@@ -137,22 +142,42 @@
             this.editToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.regionsMenu.Name = "regionsMenu";
-            this.regionsMenu.Size = new System.Drawing.Size(153, 70);
+            this.regionsMenu.Size = new System.Drawing.Size(108, 48);
             this.regionsMenu.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
-            // 
-            // deleteToolStripMenuItem
-            // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.deleteToolStripMenuItem.Text = "Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(12, 30);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(107, 17);
+            this.checkBox1.TabIndex = 3;
+            this.checkBox1.Text = "Drawing Enabled";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(125, 24);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Refresh Image";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
@@ -160,6 +185,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(818, 545);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.menuStrip);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.pictureBox1);
@@ -190,6 +217,8 @@
         private System.Windows.Forms.ContextMenuStrip regionsMenu;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button button1;
     }
 }
 
